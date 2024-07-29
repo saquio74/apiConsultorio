@@ -21,8 +21,9 @@ public class BaseController<TE, TD, TId, TDMinRes, TF, TAdmin> : ControllerBase
     public BaseController(Context ctx, IMapper mapper, IHttpContextAccessor accessor)
     {
         QueryExtension.SetMapper(mapper);
-        Admin = (TAdmin)Activator.CreateInstance(typeof(TAdmin), ctx, mapper, accessor) 
+        var admin = Activator.CreateInstance(typeof(TAdmin), ctx, mapper, accessor) 
             ?? throw new InvalidOperationException($"No se pudo crear una instancia de {typeof(TAdmin).FullName}.");
+        Admin = (TAdmin)admin;
     }
     [HttpGet]
     public ActionResult Index([FromQuery]TF filter)
